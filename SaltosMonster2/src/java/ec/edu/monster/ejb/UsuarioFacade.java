@@ -83,7 +83,10 @@ public class UsuarioFacade extends AbstractFacade<Usuario> implements UsuarioFac
         List<Usuario> lista = null;
         String consulta;
         try {
-            consulta = "SELECT u FROM Usuario u WHERE u.rol!=?1";
+            System.out.println("NO ROL"+idrol);
+            //consulta = "SELECT h FROM Horario h, Vuelo v, Reserva r WHERE h.horario_id=v.horario_id and v.vuelo_id = r.vuelo_id and r.cliente_id=?1";
+            consulta = "SELECT u FROM Usuario u, Usurol r WHERE u.usuario_id=r.usuario_id and r.rol_id!=?1";
+            //consulta = "SELECT u FROM Usuario u WHERE u.rol!=?1";
             //consulta="SELECT * FROM Usuario u WHERE u.USUARIO_NOMBRE = ?1 and u.USUARIO_PASSWORD = ?2";
             Query query = em.createQuery(consulta);
             query.setParameter(1, idrol);
@@ -105,7 +108,8 @@ public class UsuarioFacade extends AbstractFacade<Usuario> implements UsuarioFac
 
         String consulta;
         try {
-            consulta = "SELECT u FROM Usuario u WHERE u.usuario_nombre = ?1";
+            consulta = "SELECT u FROM Usuario u, Usurol r WHERE u.usuario_id=r.usuario_id and r.rol_id=?1";
+            //consulta = "SELECT u FROM Usuario u WHERE u.usuario_nombre = ?1";
             //consulta="SELECT * FROM Usuario u WHERE u.USUARIO_NOMBRE = ?1 and u.USUARIO_PASSWORD = ?2";
             Query query = em.createQuery(consulta);
             //Query query= em.createNativeQuery(consulta);

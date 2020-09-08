@@ -9,10 +9,12 @@ import ec.edu.monster.ejb.ClienteFacadeLocal;
 import ec.edu.monster.model.Cliente;
 import ec.edu.monster.model.Persona;
 import java.io.Serializable;
+
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+import javax.servlet.http.Part;
 
 /**
  *
@@ -28,6 +30,9 @@ public class ClienteController implements Serializable{
     
     private Persona persona;
     private Cliente cliente;
+    
+
+    private String foto;
     
     @PostConstruct
     public void init(){
@@ -50,11 +55,55 @@ public class ClienteController implements Serializable{
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
     }
+
+    public ClienteFacadeLocal getClienteEJB() {
+        return clienteEJB;
+    }
+
+    public void setClienteEJB(ClienteFacadeLocal clienteEJB) {
+        this.clienteEJB = clienteEJB;
+    }
+
+    public String getFoto() {
+        return foto;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
+    }
+
     
     
+    
+    public void doUpload(){
+        System.out.println(foto);
+        /*
+        try{
+            InputStream in=image.getInputStream();
+            
+            File f = new File(""+image.getSubmittedFileName());
+            f.createNewFile();
+            FileOutputStream out = new FileOutputStream(f);
+            
+            byte[] buffer = new byte[1024];
+            int length;
+            
+            while((length=in.read(buffer))>0){
+                out.write(buffer,0,length);
+            }
+            
+            out.close();
+            in.close();
+            
+        }catch(Exception e){
+            e.printStackTrace(System.out);
+        }*/
+    }
     
     public void registrar(){
         try{
+            
+            persona.setPersona_foto(null);
             this.cliente.setPersona(persona);
             clienteEJB.create(cliente);
         }

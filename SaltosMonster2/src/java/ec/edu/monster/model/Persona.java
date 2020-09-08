@@ -17,23 +17,25 @@ import javax.persistence.Table;
  *
  * @author danie
  */
-
 @Entity
-@Table (name="persona")
-public class Persona implements Serializable{
-    
+@Table(name = "persona")
+public class Persona implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int persona_id;
-    
+
     @Column(name = "PERSONA_NOMBRES")
     private String persona_nombres;
-    
+
     @Column(name = "PERSONA_APELLIDOS")
     private String persona_apellidos;
-    
+
     @Column(name = "PERSONA_CEDULA")
     private String persona_cedula;
+
+    @Column(name = "PERSONA_FOTO")
+    private String persona_foto;
 
     public int getPersona_id() {
         return persona_id;
@@ -67,6 +69,17 @@ public class Persona implements Serializable{
         this.persona_cedula = persona_cedula;
     }
 
+    public String getPersona_foto() {
+        return persona_foto;
+    }
+
+    public void setPersona_foto(String persona_foto) {
+        this.persona_foto = persona_foto;
+    }
+
+    
+    
+
     @Override
     public int hashCode() {
         int hash = 7;
@@ -94,9 +107,7 @@ public class Persona implements Serializable{
 
     @Override
     public String toString() {
-        return "Persona{" + "persona_id=" + persona_id + '}';
+        return String.format("%s %s",persona_nombres, persona_apellidos);
     }
-    
-    
-    
+
 }

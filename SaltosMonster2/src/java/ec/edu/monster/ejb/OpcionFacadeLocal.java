@@ -29,6 +29,10 @@ public interface OpcionFacadeLocal {
     List<Opcion> findRange(int[] range);
 
     int count();
-    
+
     List<Opcion> listarOpciones();
+
+    List<Opcion> listarSubsistemas(int rol_id);
+
+    List<Opcion> listarNoSubsistemas(int rol_id);
 }

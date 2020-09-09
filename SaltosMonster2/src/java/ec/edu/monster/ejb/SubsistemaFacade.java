@@ -54,7 +54,9 @@ public class SubsistemaFacade extends AbstractFacade<Subsistema> implements Subs
         List<Subsistema> lista = null;
         String consulta;
         try {
-            consulta = "SELECT s FROM Subsistema s WHERE s.rol_id = ?1";
+            //consulta = "SELECT u FROM Usuario u, Usurol r WHERE u.usuario_id=r.usuario_id and r.rol_id=?1";
+            consulta = "SELECT s FROM Subsistema s, Modulotree m WHERE s.subsistema_id=m.subsistema_id and m.rol_id=?1";
+            //consulta = "SELECT s FROM Subsistema s WHERE s.rol_id = ?1";
             //consulta="SELECT * FROM Usuario u WHERE u.USUARIO_NOMBRE = ?1 and u.USUARIO_PASSWORD = ?2";
             Query query = em.createQuery(consulta);
             query.setParameter(1, rol_id);
@@ -73,7 +75,8 @@ public class SubsistemaFacade extends AbstractFacade<Subsistema> implements Subs
         List<Subsistema> lista = null;
         String consulta;
         try {
-            consulta = "SELECT s FROM Subsistema s WHERE s.rol_id != ?1";
+            consulta = "SELECT s FROM Subsistema s, Modulotree m WHERE s.subsistema_id=m.subsistema_id and m.rol_id!=?1";
+            //consulta = "SELECT s FROM Subsistema s WHERE s.rol_id != ?1";
             //consulta="SELECT * FROM Usuario u WHERE u.USUARIO_NOMBRE = ?1 and u.USUARIO_PASSWORD = ?2";
             Query query = em.createQuery(consulta);
             query.setParameter(1, rol_id);

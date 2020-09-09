@@ -33,21 +33,64 @@ public class OpcionFacade extends AbstractFacade<Opcion> implements OpcionFacade
 
     @Override
     public List<Opcion> listarOpciones() {
-        List<Opcion> lista=null;
+        List<Opcion> lista = null;
         String consulta;
-        try{
-            consulta="SELECT o FROM Opcion o";
+        try {
+            consulta = "SELECT o FROM Opcion o";
             //consulta="SELECT * FROM Usuario u WHERE u.USUARIO_NOMBRE = ?1 and u.USUARIO_PASSWORD = ?2";
-            Query query= em.createQuery(consulta);
+            Query query = em.createQuery(consulta);
             //Query query= em.createNativeQuery(consulta);
-            
-            lista=query.getResultList();
-            
-            
-        }catch(Exception e){
+
+            lista = query.getResultList();
+
+        } catch (Exception e) {
             throw e;
         }
-        return lista;  
+        return lista;
     }
-    
+
+    @Override
+    public List<Opcion> listarSubsistemas(int rol_id) {
+
+        List<Opcion> lista = null;
+        String consulta;
+        try {
+            //consulta = "SELECT u FROM Usuario u, Usurol r WHERE u.usuario_id=r.usuario_id and r.rol_id=?1";
+            consulta = "SELECT o FROM Opcion o, Subsistema s, Modulotree m WHERE o.opcion_id=m.opcion_id and s.subsistema_id=m.subsistema_id and m.rol_id=?1";
+            //consulta = "SELECT s FROM Subsistema s WHERE s.rol_id = ?1";
+            //consulta="SELECT * FROM Usuario u WHERE u.USUARIO_NOMBRE = ?1 and u.USUARIO_PASSWORD = ?2";
+            Query query = em.createQuery(consulta);
+            query.setParameter(1, rol_id);
+            //Query query= em.createNativeQuery(consulta);
+
+            lista = query.getResultList();
+
+        } catch (Exception e) {
+            throw e;
+        }
+        return lista;
+    }
+
+    @Override
+    public List<Opcion> listarNoSubsistemas(int rol_id) {
+
+        List<Opcion> lista = null;
+        String consulta;
+        try {
+            //consulta = "SELECT u FROM Usuario u, Usurol r WHERE u.usuario_id=r.usuario_id and r.rol_id=?1";
+            consulta = "SELECT o FROM Opcion o, Subsistema s, Modulotree m WHERE o.opcion_id=m.opcion_id and s.subsistema_id=m.subsistema_id and m.rol_id!=?1";
+            //consulta = "SELECT s FROM Subsistema s WHERE s.rol_id = ?1";
+            //consulta="SELECT * FROM Usuario u WHERE u.USUARIO_NOMBRE = ?1 and u.USUARIO_PASSWORD = ?2";
+            Query query = em.createQuery(consulta);
+            query.setParameter(1, rol_id);
+            //Query query= em.createNativeQuery(consulta);
+
+            lista = query.getResultList();
+
+        } catch (Exception e) {
+            throw e;
+        }
+        return lista;
+    }
+
 }

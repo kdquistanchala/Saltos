@@ -5,9 +5,11 @@
  */
 package ec.edu.monster.controller;
 
+import ec.edu.monster.ejb.OpcionFacadeLocal;
 import ec.edu.monster.ejb.RolFacadeLocal;
 import ec.edu.monster.ejb.SubsistemaFacadeLocal;
 import ec.edu.monster.ejb.UsuarioFacadeLocal;
+import ec.edu.monster.model.Opcion;
 import ec.edu.monster.model.Rol;
 import ec.edu.monster.model.Subsistema;
 import ec.edu.monster.model.Usuario;
@@ -24,7 +26,7 @@ import javax.inject.Named;
  */
 @Named
 @SessionScoped
-public class RolesOpcionesController implements Serializable{
+public class RolesOpcionesController implements Serializable {
 
     @EJB
     private RolFacadeLocal rolEJB;
@@ -44,10 +46,18 @@ public class RolesOpcionesController implements Serializable{
     private List<Subsistema> subsistemaSi;
     private List<Subsistema> subsistemaNo;
 
+    @EJB
+    private OpcionFacadeLocal opcionEJB;
+    private Opcion opcion;
+    private List<Opcion> opcionSi;
+    private List<Opcion> opcionNo;
+
     private String rolid;
     private String opValid;
     private String opNoValid;
 
+    
+    
     public String getRolid() {
         return rolid;
     }
@@ -79,10 +89,6 @@ public class RolesOpcionesController implements Serializable{
     public void setSubsistemaCreate(Subsistema subsistemaCreate) {
         this.subsistemaCreate = subsistemaCreate;
     }
-
-
-    
-    
 
     public List<Subsistema> getSubsistemasNo() {
         return subsistemasNo;
@@ -159,9 +165,29 @@ public class RolesOpcionesController implements Serializable{
         this.subsistemaNo = subsistemaNo;
     }
 
-    
-    
-    
+    public Opcion getOpcion() {
+        return opcion;
+    }
+
+    public void setOpcion(Opcion opcion) {
+        this.opcion = opcion;
+    }
+
+    public List<Opcion> getOpcionSi() {
+        return opcionSi;
+    }
+
+    public void setOpcionSi(List<Opcion> opcionSi) {
+        this.opcionSi = opcionSi;
+    }
+
+    public List<Opcion> getOpcionNo() {
+        return opcionNo;
+    }
+
+    public void setOpcionNo(List<Opcion> opcionNo) {
+        this.opcionNo = opcionNo;
+    }
 
     @PostConstruct
     public void init() {
@@ -176,14 +202,15 @@ public class RolesOpcionesController implements Serializable{
         rol = new Rol();
         rolCreate = new Rol();
         subsistema = new Subsistema();
-        subsistemaCreate= new Subsistema();
+        subsistemaCreate = new Subsistema();
+        opcion = new Opcion();
     }
 
     public void registrar() {
         try {
-            
+
             subsistemaCreate.setRol_id(18);
-            
+
             subsistemaEJB.create(subsistemaCreate);
 
         } catch (Exception e) {
@@ -205,8 +232,10 @@ public class RolesOpcionesController implements Serializable{
         rol=rolEJB.findAll();
     }
      */
+ /*
     public List<Subsistema> leerOp() {
 
+        
         try {
             Rol rols = rolEJB.getRolId(rolid);
             subsistemaSi = subsistemaEJB.listarSubsistemas(rols.getRol_id());
@@ -216,10 +245,24 @@ public class RolesOpcionesController implements Serializable{
 
         return subsistemaSi;
 
+    }*/
+    public List<Opcion> leerOp() {
+
+        try {
+            Rol rols = rolEJB.getRolId(rolid);
+            opcionSi = opcionEJB.listarSubsistemas(rols.getRol_id());
+        } catch (Exception e) {
+
+        }
+
+        return opcionSi;
+
     }
 
-    
-    /**************************************************/
+    /**
+     * ***********************************************
+     */
+    /*
     public List<Subsistema> leerOpNo() {
         try {
             Rol rols = rolEJB.getRolId(rolid);
@@ -228,6 +271,16 @@ public class RolesOpcionesController implements Serializable{
 
         }
         return subsistemaNo;
+    }*/
+    public List<Opcion> leerOpNo() {
+        try {
+            Rol rols = rolEJB.getRolId(rolid);
+            opcionNo = opcionEJB.listarNoSubsistemas(rols.getRol_id());
+        } catch (Exception e) {
+
+        }
+
+        return opcionNo;
     }
 
     public void leer(Rol rolSeleccion) {
@@ -261,8 +314,8 @@ public class RolesOpcionesController implements Serializable{
 
         //Recuperar usuario  
         try {
-            
-            Subsistema subsistemap= subsistemaEJB.subsistemaObjeto(opNoValid);
+
+            Subsistema subsistemap = subsistemaEJB.subsistemaObjeto(opNoValid);
             Rol rols = rolEJB.getRolId(rolid);
             subsistemap.setRol_id(rols.getRol_id());
             subsistemaEJB.edit(subsistemap);
@@ -273,12 +326,11 @@ public class RolesOpcionesController implements Serializable{
 
     }
 
-
     public void regresar() {
 
         //Recuperar usuario  
         try {
-            Subsistema subistemap= subsistemaEJB.subsistemaObjeto(opValid);
+            Subsistema subistemap = subsistemaEJB.subsistemaObjeto(opValid);
             Rol rols = rolEJB.getRolId("No asignado");
             subistemap.setRol_id(rols.getRol_id());
             subsistemaEJB.edit(subistemap);

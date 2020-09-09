@@ -102,7 +102,7 @@ public class Opcion implements Serializable{
 
     @Override
     public String toString() {
-        return "Opcion{" + "opcion_id=" + opcion_id + '}';
+        return String.format("%s", opcion_descripcion);
     }
     
     

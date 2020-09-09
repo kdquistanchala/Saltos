@@ -6,8 +6,12 @@
 package ec.edu.monster.controller;
 
 import ec.edu.monster.ejb.ClienteFacadeLocal;
+import ec.edu.monster.ejb.UsuarioFacadeLocal;
+import ec.edu.monster.ejb.UsurolFacadeLocal;
 import ec.edu.monster.model.Cliente;
 import ec.edu.monster.model.Persona;
+import ec.edu.monster.model.Usuario;
+import ec.edu.monster.model.Usurol;
 import java.io.Serializable;
 
 import javax.annotation.PostConstruct;
@@ -15,29 +19,38 @@ import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.servlet.http.Part;
+import org.apache.commons.codec.digest.DigestUtils;
 
 /**
  *
  * @author danie
  */
-
 @Named
 @ViewScoped
-public class ClienteController implements Serializable{
+public class ClienteController implements Serializable {
 
     @EJB
     private ClienteFacadeLocal clienteEJB;
+
+    @EJB
+    private UsuarioFacadeLocal usuarioEJB;
     
+    @EJB
+    private UsurolFacadeLocal usurolEJB;
+
     private Persona persona;
     private Cliente cliente;
-    
+    private Usuario usuario;
+    private Usurol usurol;
 
     private String foto;
-    
+
     @PostConstruct
-    public void init(){
-        cliente= new Cliente();
+    public void init() {
+        cliente = new Cliente();
         persona = new Persona();
+        usuario= new Usuario();
+        usurol= new Usurol();
     }
 
     public Persona getPersona() {
@@ -72,10 +85,25 @@ public class ClienteController implements Serializable{
         this.foto = foto;
     }
 
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public Usurol getUsurol() {
+        return usurol;
+    }
+
+    public void setUsurol(Usurol usurol) {
+        this.usurol = usurol;
+    }
     
     
-    
-    public void doUpload(){
+
+    public void doUpload() {
         System.out.println(foto);
         /*
         try{
@@ -99,15 +127,28 @@ public class ClienteController implements Serializable{
             e.printStackTrace(System.out);
         }*/
     }
-    
-    public void registrar(){
-        try{
-            
+
+    public void registrar() {
+        try {
+
             persona.setPersona_foto(null);
             this.cliente.setPersona(persona);
             clienteEJB.create(cliente);
-        }
-        catch(Exception e){
+            
+            this.usuario.setPersona(persona.getPersona_id());
+            this.usuario.setRol(1);
+            this.usuario.setUsuario_nombre(cliente.getCliente_correo());
+            String encriptado=DigestUtils.md5Hex(usuario.getUsuario_password());
+
+            usuario.setUsuario_password(encriptado);
+            
+            usuarioEJB.create(usuario);
+            
+            usurol.setRol_id(usuario.getRol());
+            usurol.setUsuario_id(usuario.getUsuario_id());
+            usurolEJB.create(usurol);
+            
+        } catch (Exception e) {
         }
     }
 }

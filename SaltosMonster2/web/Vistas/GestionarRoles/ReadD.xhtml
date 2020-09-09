@@ -23,6 +23,7 @@
                     Perfil de Usuario : 
                     <h:panelGroup style="display:block; text-align:left">
                         <h:selectOneMenu id="tipo" value="#{rolesController.rolid}">
+                            <f:selectItem itemLabel="Seleccione uno" itemValue="" />
                             <f:selectItems value="#{rolesController.roles}"/>
                             <p:ajax  event="valueChange"  update="usuarios, mismoPerfil"/>
                         </h:selectOneMenu> 

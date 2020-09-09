@@ -22,9 +22,10 @@
                         <p:inputText id="personaApellidos" value="#{clienteController.persona.persona_apellidos}" title="Apellidos" />
                         <p:outputLabel value="Cédula" for="personaCedula" />
                         <p:inputText id="personaCedula" value="#{clienteController.persona.persona_cedula}" title="Cedula" />
+
+                        <p:outputLabel value="Foto"/>
+                        <p:fileUpload/>
                     </h:panelGrid>
-
-
 
 
                     <h:panelGrid columns="1" style="width: 100%">
@@ -49,41 +50,33 @@
                                                     showOn="button"
                                                     navigator="true"/>
 
+                                        <p:outputLabel value="Telefono" for="clienteTelefono" />
+                                        <p:inputText id="clienteTelefono" value="#{clienteController.cliente.cliente_telefono}" title="Telefono" />            
 
 
                                     </h:panelGrid> 
                                 </p:panel>
                             </p:tab>   
 
-                            <p:tab title="Foto" id="foto">
-                                <p:panel header="Foto">
-                                    
-                                    <h:panelGrid columns="2">
 
-                                        <p:fileUpload/>
-                                    </h:panelGrid> 
-
-                                </p:panel>
-                            </p:tab>
-                            
-                            
-                            <p:tab title="Información de Contacto" id="infoContacto">
-                                <p:panel header="Información de Contacto">
+                            <p:tab title="Cuenta de usuario" id="infoCuenta">
+                                <p:panel header="Cuenta de usuario">
                                     <p:messages/>
                                     <h:panelGrid columns="2">
 
                                         <p:outputLabel value="Correo" for="clienteCorreo" />
                                         <p:inputText id="clienteCorreo" value="#{clienteController.cliente.cliente_correo}" title="Correo" />
-                                        <p:outputLabel value="Telefono" for="clienteTelefono" />
-                                        <p:inputText id="clienteTelefono" value="#{clienteController.cliente.cliente_telefono}" title="Telefono" />            
+
+                                        <p:outputLabel value="Password" for="usuarioPassword" />
+                                        <p:password id="usuarioPassword" value="#{clienteController.usuario.usuario_password}"/>
 
 
-                                        <p:commandButton icon="ui-icon-check" value="Registrar" actionListener="#{clienteController.registrar()}"/>
+                                        <p:commandButton icon="ui-icon-check" value="Registrar" actionListener="#{clienteController.registrar()}" action="/Vistas/GestionarClienteA/Read?faces-redirect=true"/>
                                     </h:panelGrid> 
 
                                 </p:panel>
                             </p:tab>
-                            
+
 
                         </p:wizard>
 

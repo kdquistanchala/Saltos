@@ -24,11 +24,12 @@
                         <h:selectOneMenu id="tipo" value="#{rolesOpcionesController.rolid}">
                             <f:selectItem itemLabel="Seleccione uno" itemValue="" />
                             <f:selectItems value="#{rolesOpcionesController.roles}"/>
-                            <p:ajax  event="valueChange"  update="usuarios, mismoPerfil"/>
+                            <p:ajax  event="valueChange"  update="tree"/>
                         </h:selectOneMenu> 
                     </h:panelGroup>
 
-
+                    <!--
+                    
                     <h:panelGrid columns="3" width="700">
                         <h:panelGroup >
                             <h3> Opciones Disponibles </h3>
@@ -72,17 +73,28 @@
                         </h:panelGroup>
                     </h:panelGrid>
                     
+                    -->
                     
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
+                    <h:panelGrid id="tree" width="700">
+                        <p:tree selectionMode="checkbox" 
+                                propagateSelectionUp="true" propagateSelectionDown="true" 
+                                value="#{rolesOpcionesController.miTree()}" var="node">
+                            <p:treeNode>
+                                <h:outputText value="#{node}" />
+                            </p:treeNode>
+                        
+                        </p:tree>
+                    </h:panelGrid>
+
+
+                    <h:commandButton value="Guardar "/>
+
+
+
+
+
+
+
 
                 </h:form>
 

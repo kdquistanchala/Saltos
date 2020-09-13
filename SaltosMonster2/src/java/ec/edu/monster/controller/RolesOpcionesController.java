@@ -5,10 +5,12 @@
  */
 package ec.edu.monster.controller;
 
+import ec.edu.monster.ejb.ModulotreeFacadeLocal;
 import ec.edu.monster.ejb.OpcionFacadeLocal;
 import ec.edu.monster.ejb.RolFacadeLocal;
 import ec.edu.monster.ejb.SubsistemaFacadeLocal;
 import ec.edu.monster.ejb.UsuarioFacadeLocal;
+import ec.edu.monster.model.Modulotree;
 import ec.edu.monster.model.Opcion;
 import ec.edu.monster.model.Rol;
 import ec.edu.monster.model.Subsistema;
@@ -19,6 +21,8 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
+import org.primefaces.model.DefaultTreeNode;
+import org.primefaces.model.TreeNode;
 
 /**
  *
@@ -55,9 +59,8 @@ public class RolesOpcionesController implements Serializable {
     private String rolid;
     private String opValid;
     private String opNoValid;
+    private TreeNode root = null;
 
-    
-    
     public String getRolid() {
         return rolid;
     }
@@ -204,6 +207,48 @@ public class RolesOpcionesController implements Serializable {
         subsistema = new Subsistema();
         subsistemaCreate = new Subsistema();
         opcion = new Opcion();
+    }
+
+    @EJB
+    private ModulotreeFacadeLocal treeEJB;
+
+    public TreeNode miTree() throws Exception {
+
+        List<Modulotree> tree = treeEJB.findAll();
+
+        root = new DefaultTreeNode("Root", null);
+
+        for (Subsistema sub : subsistemaEJB.findAll()) {
+
+            TreeNode node2 = new DefaultTreeNode(sub.getSubsistema_descripcion(), root);
+
+            for (Opcion op : opcionEJB.findAll()) {
+
+                if (op.getSubsistema() == sub.getSubsistema_id()) {
+
+                    TreeNode node3 = new DefaultTreeNode(op.getOpcion_descripcion(), node2);
+
+                    for (Modulotree item : tree) {
+                        if (rolid != null) {
+                            if (item.getRol_id() == rolEJB.getRolId(rolid).getRol_id() && item.getOpcion_id() == op.getOpcion_id()) {
+                                node3.setSelected(true);
+                                break;
+                            } else {
+                                node3.setSelected(false);
+                            }
+                        }
+                    }
+
+                }
+            }
+        }
+
+        return root;
+    }
+
+    public boolean check(Opcion op) {
+        String e = rolid;
+        return true;
     }
 
     public void registrar() {

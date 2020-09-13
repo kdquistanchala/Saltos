@@ -14,7 +14,8 @@
 
             <ui:define name="content">
                 <h3> Horarios de los vuelos registrados </h3>
-
+                <h:form>
+                    <p:messages id="mensaje" autoUpdate="true"/>
 
                 <p:dataTable value="#{vuelosaltoController.reservaSelec}"  var="reserva">
 
@@ -58,6 +59,7 @@
 
                 <p:commandButton value="Agregar Pasajero" action="#{vuelosaltoController.verificarDisponibilidad()}"/>
 
+                </h:form>
 
             </ui:define>
 

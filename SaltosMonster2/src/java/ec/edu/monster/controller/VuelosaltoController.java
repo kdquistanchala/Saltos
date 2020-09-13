@@ -18,6 +18,8 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
 /**
@@ -233,10 +235,12 @@ public class VuelosaltoController implements Serializable {
                 redireccion = "/Vistas/RegistrarVuelosReservas/CreatePasajero?faces-redirect=true";
             } else {
                 System.out.println("disponibilidad excedida");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"Disponibilidad excedida",""));
             }
 
         } catch (Exception e) {
             System.out.println("disponibilidad excedida");
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"Disponibilidad excedida",""));
         }
         return redireccion;
     }

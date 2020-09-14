@@ -5,7 +5,7 @@
         <group>
             <file>file:/D:/Documents/GitHub/Saltos/SaltosMonster2/web/Vistas/GestionarRoles/ReadRO.xhtml</file>
             <file>file:/D:/Documents/GitHub/Saltos/SaltosMonster2/src/java/ec/edu/monster/controller/VuelosaltoController.java</file>
-            <file>file:/D:/Documents/GitHub/Saltos/SaltosMonster2/web/index.xhtml</file>
+            <file>file:/D:/Documents/GitHub/Saltos/SaltosMonster2/src/java/ec/edu/monster/controller/IndexController.java</file>
             <file>file:/D:/Documents/GitHub/Saltos/SaltosMonster2/src/java/ec/edu/monster/controller/RolesOpcionesController.java</file>
         </group>
     </open-files>

@@ -76,18 +76,19 @@
                     -->
                     
                     <h:panelGrid id="tree" width="700">
-                        <p:tree selectionMode="checkbox" 
+                        <p:tree selectionMode="checkbox"
+                                selection="#{rolesOpcionesController.selectedNodes}"
                                 propagateSelectionUp="true" propagateSelectionDown="true" 
                                 value="#{rolesOpcionesController.miTree()}" var="node">
                             <p:treeNode>
-                                <h:outputText value="#{node}" />
+                                <h:outputText value="#{node}" style="margin-left: 8px;"/>
                             </p:treeNode>
                         
                         </p:tree>
                     </h:panelGrid>
 
 
-                    <h:commandButton value="Guardar "/>
+                    <h:commandButton value="Guardar" action="#{rolesOpcionesController.guardarPermisos(rolesOpcionesController.selectedNodes)}"/>
 
 
 

@@ -14,6 +14,7 @@
 
             <ui:define name="content">
                 <h:form id="form">
+                    <p:messages id="mensaje" autoUpdate="true"/>
 
                     <h:panelGrid columns="2">
                         <p:outputLabel value="Nombres" for="personaNombres" />
@@ -21,7 +22,7 @@
                         <p:outputLabel value="Apellidos" for="personaApellidos" />
                         <p:inputText id="personaApellidos" value="#{clienteController.persona.persona_apellidos}" title="Apellidos" />
                         <p:outputLabel value="Cédula" for="personaCedula" />
-                        <p:inputText id="personaCedula" value="#{clienteController.persona.persona_cedula}" title="Cedula" />
+                        <p:inputText id="personaCedula" value="#{clienteController.cedula}" title="Cedula" />
 
                         <p:outputLabel value="Foto"/>
                         <p:fileUpload/>
@@ -71,7 +72,7 @@
                                         <p:password id="usuarioPassword" value="#{clienteController.usuario.usuario_password}"/>
 
 
-                                        <p:commandButton icon="ui-icon-check" value="Registrar" actionListener="#{clienteController.registrar()}" action="/Vistas/GestionarClienteA/Read?faces-redirect=true"/>
+                                        <p:commandButton icon="ui-icon-check" value="Registrar" action="#{clienteController.registrar()}" />
                                     </h:panelGrid> 
 
                                 </p:panel>

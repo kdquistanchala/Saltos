@@ -16,6 +16,8 @@ import java.io.Serializable;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.servlet.http.Part;
@@ -34,7 +36,7 @@ public class ClienteController implements Serializable {
 
     @EJB
     private UsuarioFacadeLocal usuarioEJB;
-    
+
     @EJB
     private UsurolFacadeLocal usurolEJB;
 
@@ -45,12 +47,31 @@ public class ClienteController implements Serializable {
 
     private String foto;
 
+    String cedula = "";
+    algoritmo algo = new algoritmo();
+
     @PostConstruct
     public void init() {
         cliente = new Cliente();
         persona = new Persona();
-        usuario= new Usuario();
-        usurol= new Usurol();
+        usuario = new Usuario();
+        usurol = new Usurol();
+    }
+
+    public String getCedula() {
+        return cedula;
+    }
+
+    public void setCedula(String cedula) {
+        this.cedula = cedula;
+    }
+
+    public algoritmo getAlgo() {
+        return algo;
+    }
+
+    public void setAlgo(algoritmo algo) {
+        this.algo = algo;
     }
 
     public Persona getPersona() {
@@ -100,8 +121,6 @@ public class ClienteController implements Serializable {
     public void setUsurol(Usurol usurol) {
         this.usurol = usurol;
     }
-    
-    
 
     public void doUpload() {
         System.out.println(foto);
@@ -128,27 +147,39 @@ public class ClienteController implements Serializable {
         }*/
     }
 
-    public void registrar() {
+    public String registrar() {
+        String redireccion = null;
         try {
 
-            persona.setPersona_foto(null);
-            this.cliente.setPersona(persona);
-            clienteEJB.create(cliente);
             
-            this.usuario.setPersona(persona.getPersona_id());
-            this.usuario.setRol(1);
-            this.usuario.setUsuario_nombre(cliente.getCliente_correo());
-            String encriptado=DigestUtils.md5Hex(usuario.getUsuario_password());
+            System.out.println("ced" + cedula.isEmpty());
+            if (cedula.isEmpty() || algo.valida(cedula)) {
 
-            usuario.setUsuario_password(encriptado);
-            
-            usuarioEJB.create(usuario);
-            
-            usurol.setRol_id(usuario.getRol());
-            usurol.setUsuario_id(usuario.getUsuario_id());
-            usurolEJB.create(usurol);
-            
+                persona.setPersona_foto(null);
+                this.cliente.setPersona(persona);
+                clienteEJB.create(cliente);
+
+                this.usuario.setPersona(persona.getPersona_id());
+                this.usuario.setRol(1);
+                this.usuario.setUsuario_nombre(cliente.getCliente_correo());
+                String encriptado = DigestUtils.md5Hex(usuario.getUsuario_password());
+
+                usuario.setUsuario_password(encriptado);
+
+                usuarioEJB.create(usuario);
+
+                usurol.setRol_id(usuario.getRol());
+                usurol.setUsuario_id(usuario.getUsuario_id());
+                usurolEJB.create(usurol);
+                redireccion ="/Vistas/GestionarClienteA/Read?faces-redirect=true";
+            }else{
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "La cédula no es válida", ""));
+                System.out.println("no es valido");
+            }
+
         } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "La cédula no es válida", ""));
         }
+        return redireccion;
     }
 }

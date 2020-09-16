@@ -220,80 +220,92 @@ public class RolesOpcionesController implements Serializable {
     public void setSelectedNodes(TreeNode[] selectedNodes) {
         this.selectedNodes = selectedNodes;
     }
-    
+
     public void guardarPermisos(TreeNode[] nodes) throws Exception {
-        
-        if(nodes != null) {
-            
-            for(Modulotree item : treeEJB.findAll()){
-                if(item.getRol_id()==rolEJB.getRolId(rolid).getRol_id()){
+
+        if (nodes != null && rolid != null) {
+
+            int idRol = rolEJB.getRolId(rolid).getRol_id();
+
+            for (Modulotree item : treeEJB.findAll()) {
+                if (item.getRol_id() == idRol) {
                     treeEJB.remove(item);
                 }
             }
-            
-            for(TreeNode node : nodes) {
-                if(!node.getParent().toString().equals("root")){
+
+            for (TreeNode node : nodes) {
+                if (!node.getParent().toString().equals("root")) {
                     //System.out.println(node.getData().toString());
-                    int idRol = rolEJB.getRolId(rolid).getRol_id();
                     int idSubsistema = subsistemaId(node.getParent().toString());
                     int idOpcion = opcionId(node.getData().toString());
-                    
-                    Modulotree permiso = new Modulotree();
-                    permiso.setOpcion_id(idOpcion);
-                    permiso.setRol_id(idRol);
-                    permiso.setSubsistema_id(idSubsistema);
-                    /*System.out.println(permiso.getOpcion_id());
-                    System.out.println(permiso.getRol_id());
-                    System.out.println(permiso.getSubsistema_id());*/
-                    treeEJB.create(permiso);
+
+                    if (idRol != 0 && idSubsistema != 0) {
+                        Modulotree permiso = new Modulotree();
+                        permiso.setOpcion_id(idOpcion);
+                        permiso.setRol_id(idRol);
+                        permiso.setSubsistema_id(idSubsistema);
+                        /*System.out.println(permiso.getOpcion_id());
+                        System.out.println(permiso.getRol_id());
+                        System.out.println(permiso.getSubsistema_id());*/
+                        treeEJB.create(permiso);
+                    }
                 }
             }
-            
         }
-        
     }
-    
-    public int subsistemaId(String nombreSubsistema){
+
+    public int subsistemaId(String nombreSubsistema) {
         int id = 0;
-        for(Subsistema sub : subsistemaEJB.findAll()){
-            if(sub.getSubsistema_descripcion().equals(nombreSubsistema)){
+        for (Subsistema sub : subsistemaEJB.findAll()) {
+            if (sub.getSubsistema_descripcion().equals(nombreSubsistema)) {
                 id = sub.getSubsistema_id();
                 break;
             }
         }
         return id;
     }
-    
-    public int opcionId(String nombreOpcion){
+
+    public int opcionId(String nombreOpcion) {
         int id = 0;
-        for(Opcion op : opcionEJB.findAll()){
-            if(op.getOpcion_descripcion().equals(nombreOpcion)){
+        for (Opcion op : opcionEJB.findAll()) {
+            if (op.getOpcion_descripcion().equals(nombreOpcion)) {
                 id = op.getOpcion_id();
                 break;
             }
         }
         return id;
     }
-    
-    public TreeNode miTree() throws Exception {
+
+    public TreeNode miTree() {
 
         List<Modulotree> tree = treeEJB.findAll();
+        List<Subsistema> subsistemas = subsistemaEJB.findAll();
+        List<Opcion> opciones = opcionEJB.findAll();
+        int idRol = 0;
+
+        if (rolid != null) {
+            try {
+                idRol = rolEJB.getRolId(rolid).getRol_id();
+            } catch (Exception ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
 
         root = new DefaultTreeNode("Root", null);
 
-        for (Subsistema sub : subsistemaEJB.findAll()) {
+        for (Subsistema sub : subsistemas) {
 
             TreeNode node2 = new DefaultTreeNode(sub.getSubsistema_descripcion(), root);
 
-            for (Opcion op : opcionEJB.findAll()) {
+            for (Opcion op : opciones) {
 
                 if (op.getSubsistema() == sub.getSubsistema_id()) {
 
                     TreeNode node3 = new DefaultTreeNode(op.getOpcion_descripcion(), node2);
                     node3.setSelected(false);
                     for (Modulotree item : tree) {
-                        if (rolid != null) {
-                            if (item.getRol_id() == rolEJB.getRolId(rolid).getRol_id() && item.getOpcion_id() == op.getOpcion_id()) {
+                        if (idRol != 0) {
+                            if (item.getRol_id() == idRol && item.getOpcion_id() == op.getOpcion_id()) {
                                 node3.setSelected(true);
                                 break;
                             }
@@ -303,7 +315,6 @@ public class RolesOpcionesController implements Serializable {
                 }
             }
         }
-
         return root;
     }
 

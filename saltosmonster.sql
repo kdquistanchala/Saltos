@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 09, 2020 at 05:56 AM
+-- Generation Time: Sep 16, 2020 at 02:39 AM
 -- Server version: 10.1.28-MariaDB
 -- PHP Version: 7.1.10
 
@@ -56,7 +56,8 @@ CREATE TABLE `cliente` (
 INSERT INTO `cliente` (`PERSONA_ID`, `CLIENTE_ID`, `CLIENTE_EDAD`, `CLIENTE_CORREO`, `CLIENTE_TELEFONO`) VALUES
 (53, 46, 23, 'root@hotmail.com', '2653693'),
 (55, 48, 23, 'karla@hotmail.com', '0987589664'),
-(56, 49, 28, 'andrea@hotmail.com', '2653698');
+(56, 49, 28, 'andrea@hotmail.com', '2653698'),
+(57, 50, 23, 'rosa@hotmail.com', '0987589887');
 
 -- --------------------------------------------------------
 
@@ -130,8 +131,10 @@ CREATE TABLE `modulotree` (
 --
 
 INSERT INTO `modulotree` (`mod_codigo`, `rol_id`, `subsistema_id`, `opcion_id`) VALUES
-(1, 2, 1, 1),
-(2, 2, 1, 12);
+(21, 2, 1, 1),
+(22, 2, 1, 12),
+(23, 2, 3, 4),
+(24, 2, 3, 11);
 
 -- --------------------------------------------------------
 
@@ -160,7 +163,6 @@ INSERT INTO `opcion` (`OPCION_ID`, `SUBSISTEMA_ID`, `OPCION_DESCRIPCION`, `OPCIO
 (8, 6, 'Disponibilidad de vuelos', 'GestionarReservaCliente/ReadHorario.xhtml'),
 (9, 7, 'Reserva', 'GestionarReservaCliente/ReadReserva.xhtml'),
 (10, 3, 'Horarios', 'RegistrarVuelosReservas/ReadVueloSalto.xhtml'),
-(11, 3, 'Informacion de vuelos', 'GestionarVuelos/ReadInforme.xhtml'),
 (12, 1, 'Gestionar Opciones', 'GestionarRoles/ReadRO.xhtml');
 
 -- --------------------------------------------------------
@@ -201,7 +203,8 @@ CREATE TABLE `persona` (
 INSERT INTO `persona` (`PERSONA_ID`, `PERSONA_NOMBRES`, `PERSONA_APELLIDOS`, `PERSONA_CEDULA`, `PERSONA_FOTO`) VALUES
 (53, 'root', 'root', '1720875879', NULL),
 (55, 'Karla Daniela', 'Quistanchala Suntaxi', '1720875879', NULL),
-(56, 'Andrea', 'Quistanchala', '1720875874', NULL);
+(56, 'Andrea', 'Quistanchala', '1720875874', NULL),
+(57, 'Rosa', 'Sanchez', '1720875874', NULL);
 
 -- --------------------------------------------------------
 
@@ -230,16 +233,27 @@ CREATE TABLE `reservavuelo` (
   `tipo` varchar(50) NOT NULL,
   `valor` decimal(10,0) NOT NULL,
   `equipo` decimal(10,0) NOT NULL,
-  `camarografo` decimal(10,0) NOT NULL
+  `camarografo` decimal(10,0) NOT NULL,
+  `totalcliente` decimal(10,0) NOT NULL,
+  `total` decimal(10,0) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `reservavuelo`
 --
 
-INSERT INTO `reservavuelo` (`codReserva`, `numVuelo`, `horarioVuelo`, `pasajero`, `tipo`, `valor`, `equipo`, `camarografo`) VALUES
-(1, 1, '2020-09-09', 'Karla Daniela Quistanchala Suntaxi', 'tandem cliente', '308', '0', '70'),
-(2, 1, '2020-09-09', 'Andrea Quistanchala', 'tandem instructor', '0', '0', '0');
+INSERT INTO `reservavuelo` (`codReserva`, `numVuelo`, `horarioVuelo`, `pasajero`, `tipo`, `valor`, `equipo`, `camarografo`, `totalcliente`, `total`) VALUES
+(3, 1, '2020-09-09', 'Karla Daniela Quistanchala Suntaxi', 'tandem instructor', '0', '0', '0', '0', '0'),
+(4, 1, '2020-09-09', 'Andrea Quistanchala', 'tandem cliente', '308', '0', '70', '378', '0'),
+(5, 4, '2020-09-05', 'Karla Daniela Quistanchala Suntaxi', 'tandem cliente', '308', '0', '70', '378', '378'),
+(6, 4, '2020-09-05', 'Andrea Quistanchala', 'tandem instructor', '0', '0', '0', '0', '0'),
+(7, 4, '2020-09-05', 'root root', 'tandem instructor', '0', '0', '0', '0', '0'),
+(8, 4, '2020-09-05', 'Andrea Quistanchala', 'libre cliente', '40', '30', '0', '70', '70'),
+(13, 3, '2020-09-15', 'Andrea Quistanchala', 'libre cliente', '40', '30', '0', '70', '350'),
+(14, 3, '2020-09-15', 'Karla Daniela Quistanchala Suntaxi', 'libre camarografo', '0', '0', '0', '0', '350'),
+(15, 3, '2020-09-15', 'Rosa Sanchez', 'libre cliente', '40', '30', '0', '70', '350'),
+(16, 3, '2020-09-15', 'Rosa Sanchez', 'libre cliente', '40', '30', '70', '140', '350'),
+(17, 3, '2020-09-15', 'Karla Daniela Quistanchala Suntaxi', 'libre cliente', '40', '30', '0', '70', '350');
 
 -- --------------------------------------------------------
 
@@ -340,8 +354,9 @@ CREATE TABLE `usuario` (
 
 INSERT INTO `usuario` (`USUARIO_ID`, `PERSONA_ID`, `ROL_ID`, `USUARIO_NOMBRE`, `USUARIO_PASSWORD`) VALUES
 (21, 53, 2, 'root', '63a9f0ea7bb98050796b649e85481845'),
-(22, 55, 1, 'karla@hotmail.com', '5fcd162c2418ef549b7b912976468942'),
-(23, 56, 1, 'andrea@hotmail.com', '1c42f9c1ca2f65441465b43cd9339d6c');
+(22, 55, 18, 'karla@hotmail.com', '5fcd162c2418ef549b7b912976468942'),
+(23, 56, 18, 'andrea@hotmail.com', '1c42f9c1ca2f65441465b43cd9339d6c'),
+(24, 57, 1, 'rosa@hotmail.com', '84109ae4b4178430b8174b1dfef9162b');
 
 -- --------------------------------------------------------
 
@@ -360,8 +375,10 @@ CREATE TABLE `usurol` (
 --
 
 INSERT INTO `usurol` (`usucodigo`, `rol_id`, `usuario_id`) VALUES
-(3, 1, 22),
-(4, 1, 23);
+(25, 2, 21),
+(26, 1, 22),
+(27, 1, 23),
+(28, 1, 24);
 
 -- --------------------------------------------------------
 
@@ -399,7 +416,10 @@ CREATE TABLE `vuelosalto` (
 --
 
 INSERT INTO `vuelosalto` (`salto_id`, `vuelo_avion`, `vuelo_tandem`, `vuelo_libre`, `horario_fecha`, `horario_hora`, `disponible`) VALUES
-(1, 'Cesnna 206', 2, 1, '2020-09-09', '15:00:00', 2);
+(1, 'Cesnna 206', 2, 1, '2020-09-09', '15:00:00', 4),
+(2, 'Cesnna 206', 2, 1, '2020-09-09', '15:00:00', 0),
+(3, 'Cesnna 206', 2, 1, '2020-09-15', '20:00:00', 5),
+(4, 'Cesnna 206', 2, 1, '2020-09-05', '10:00:00', 4);
 
 --
 -- Indexes for dumped tables
@@ -555,7 +575,7 @@ ALTER TABLE `adicional`
 -- AUTO_INCREMENT for table `cliente`
 --
 ALTER TABLE `cliente`
-  MODIFY `CLIENTE_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+  MODIFY `CLIENTE_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT for table `curso`
@@ -585,7 +605,7 @@ ALTER TABLE `licencia`
 -- AUTO_INCREMENT for table `modulotree`
 --
 ALTER TABLE `modulotree`
-  MODIFY `mod_codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `mod_codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `opcion`
@@ -603,7 +623,7 @@ ALTER TABLE `paracaidista`
 -- AUTO_INCREMENT for table `persona`
 --
 ALTER TABLE `persona`
-  MODIFY `PERSONA_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+  MODIFY `PERSONA_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 
 --
 -- AUTO_INCREMENT for table `reserva`
@@ -615,7 +635,7 @@ ALTER TABLE `reserva`
 -- AUTO_INCREMENT for table `reservavuelo`
 --
 ALTER TABLE `reservavuelo`
-  MODIFY `codReserva` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `codReserva` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `rol`
@@ -645,13 +665,13 @@ ALTER TABLE `tarifa`
 -- AUTO_INCREMENT for table `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `USUARIO_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `USUARIO_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `usurol`
 --
 ALTER TABLE `usurol`
-  MODIFY `usucodigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `usucodigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `vuelo`
@@ -663,7 +683,7 @@ ALTER TABLE `vuelo`
 -- AUTO_INCREMENT for table `vuelosalto`
 --
 ALTER TABLE `vuelosalto`
-  MODIFY `salto_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `salto_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Constraints for dumped tables

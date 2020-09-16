@@ -39,4 +39,6 @@ public interface UsuarioFacadeLocal {
     Usuario usuarioObjeto(String nombreUsuario) throws Exception;
     
     void actualizarTodos(Integer idrol) throws Exception;
+    
+    void eliminarUno(Integer idrol, Integer idusuario);
 }

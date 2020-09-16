@@ -29,7 +29,11 @@ public interface ReservavueloFacadeLocal {
     List<Reservavuelo> findRange(int[] range);
 
     int count();
-    
-    List<Reservavuelo> listarReservas(int numVuelo); 
-    
+
+    List<Reservavuelo> listarReservas(int numVuelo);
+
+    Double sumaTotal(int numVuelo);
+
+    void updateTotal(int numVuelo, Double total);
+
 }

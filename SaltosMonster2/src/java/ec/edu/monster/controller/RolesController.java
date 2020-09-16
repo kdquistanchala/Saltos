@@ -8,9 +8,11 @@ package ec.edu.monster.controller;
 import ec.edu.monster.ejb.RolFacadeLocal;
 import ec.edu.monster.ejb.SubsistemaFacadeLocal;
 import ec.edu.monster.ejb.UsuarioFacadeLocal;
+import ec.edu.monster.ejb.UsurolFacadeLocal;
 import ec.edu.monster.model.Rol;
 import ec.edu.monster.model.Subsistema;
 import ec.edu.monster.model.Usuario;
+import ec.edu.monster.model.Usurol;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -43,6 +45,10 @@ public class RolesController implements Serializable {
     private UsuarioFacadeLocal usuarioEJB;
     private List<Usuario> usuario;
     private List<Usuario> usuarioNo;
+
+    @EJB
+    private UsurolFacadeLocal usurolEJB;
+    private Usurol usurol;
 
     private String rolid;
     private String userValid;
@@ -160,6 +166,16 @@ public class RolesController implements Serializable {
         rol = new Rol();
         rolCreate = new Rol();
         subsistema = new Subsistema();
+        usurol = new Usurol();
+
+    }
+
+    public Usurol getUsurol() {
+        return usurol;
+    }
+
+    public void setUsurol(Usurol usurol) {
+        this.usurol = usurol;
     }
 
     public void registrar() {
@@ -202,7 +218,8 @@ public class RolesController implements Serializable {
     public List<Usuario> leerUsuarioNo() {
         try {
             Rol rols = rolEJB.getRolId(rolid);
-            usuarioNo = usuarioEJB.usuarioNoRol(rols.getRol_id());
+            usuarioNo = usuarioEJB.findAll();
+            //usuarioNo = usuarioEJB.usuarioNoRol(rols.getRol_id());
         } catch (Exception e) {
 
         }
@@ -239,11 +256,31 @@ public class RolesController implements Serializable {
     public void actualizar() {
 
         //Recuperar usuario  
+        /*
         try {
             Usuario usuario = usuarioEJB.usuarioObjeto(userNoValid);
             Rol rols = rolEJB.getRolId(rolid);
             usuario.setRol(rols.getRol_id());
             usuarioEJB.edit(usuario);
+
+        } catch (Exception e) {
+
+        }*/
+        try {
+            
+            Usuario usuario = usuarioEJB.usuarioObjeto(userNoValid);
+            
+            Rol rols = rolEJB.getRolId(rolid);
+            usurol.setRol_id(rols.getRol_id());
+            usurol.setUsuario_id(usuario.getUsuario_id());
+            System.out.println(rols.getRol_id());
+            System.out.println(usuario.getUsuario_id());
+            
+            System.out.println(usurol.getRol_id());
+            System.out.println(usurol.getUsuario_id());
+            usurolEJB.create(usurol);
+            //usuario.setRol(rols.getRol_id());
+            //usuarioEJB.edit(usuario);
 
         } catch (Exception e) {
 
@@ -256,7 +293,7 @@ public class RolesController implements Serializable {
         //Recuperar usuario  
         try {
             Rol rols = rolEJB.getRolId(rolid);
-            
+
             usuarioEJB.actualizarTodos(rols.getRol_id());
 
         } catch (Exception e) {
@@ -267,11 +304,23 @@ public class RolesController implements Serializable {
     public void regresar() {
 
         //Recuperar usuario  
+        /*
         try {
             Usuario usuario = usuarioEJB.usuarioObjeto(userValid);
             Rol rols = rolEJB.getRolId("No asignado");
             usuario.setRol(rols.getRol_id());
             usuarioEJB.edit(usuario);
+
+        } catch (Exception e) {
+
+        }*/
+        try {
+            Usuario usuario = usuarioEJB.usuarioObjeto(userValid);
+            Rol rols = rolEJB.getRolId(rolid);
+            //Rol rols = rolEJB.getRolId("No asignado");
+            //usuario.setRol(rols.getRol_id());
+            usuarioEJB.eliminarUno(rols.getRol_id(), usuario.getUsuario_id());
+            //usuarioEJB.edit(usuario);
 
         } catch (Exception e) {
 
@@ -282,7 +331,7 @@ public class RolesController implements Serializable {
 
         try {
             Rol rols = rolEJB.getRolId("No asignado");
-            
+
             usuarioEJB.actualizarTodos(rols.getRol_id());
 
         } catch (Exception e) {

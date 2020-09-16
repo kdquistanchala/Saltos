@@ -48,13 +48,18 @@ public class Reservavuelo implements Serializable {
     private Double equipo;
 
     @Column(name = "camarografo")
-    private Double camarografo;    
+    private Double camarografo;
+
+    @Column(name = "totalcliente")
+    private Double totalcliente;
+
+    @Column(name = "total")
+    private Double total;
 
     public int getCodReserva() {
         return codReserva;
     }
 
-    
     public void setCodReserva(int codReserva) {
         this.codReserva = codReserva;
     }
@@ -115,6 +120,24 @@ public class Reservavuelo implements Serializable {
         this.camarografo = camarografo;
     }
 
+    public Double getTotalcliente() {
+        return totalcliente;
+    }
+
+    public void setTotalcliente(Double totalcliente) {
+        this.totalcliente = totalcliente;
+    }
+
+    public Double getTotal() {
+        return total;
+    }
+
+    public void setTotal(Double total) {
+        this.total = total;
+    }
+    
+    
+
     @Override
     public int hashCode() {
         int hash = 7;
@@ -139,10 +162,5 @@ public class Reservavuelo implements Serializable {
         }
         return true;
     }
-    
-    
-    
-    
-    
 
 }

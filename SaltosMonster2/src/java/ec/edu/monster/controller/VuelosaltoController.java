@@ -63,6 +63,9 @@ public class VuelosaltoController implements Serializable {
 
     private String camara;
 
+    private Double totalCliente = 0.0;
+    private Double total = 0.0;
+
     @PostConstruct
     public void init() {
         vuelosalto = new Vuelosalto();
@@ -196,8 +199,24 @@ public class VuelosaltoController implements Serializable {
         this.reservaSelec = reservaSelec;
     }
 
+    public Double getTotalCliente() {
+        return totalCliente;
+    }
+
+    public void setTotalCliente(Double totalCliente) {
+        this.totalCliente = totalCliente;
+    }
+
+    public Double getTotal() {
+        return total;
+    }
+
+    public void setTotal(Double total) {
+        this.total = total;
+    }
     
     
+
     public void registrar() {
         try {
 
@@ -221,8 +240,11 @@ public class VuelosaltoController implements Serializable {
     //****************************************************************************************
     public void leerInformeVuelo(Vuelosalto vueloSeleccionado) {
         vueloSelec = vueloSeleccionado;
-        
-        reservaSelec=reservavueloEJB.listarReservas(vueloSelec.getSalto_id());
+
+        reservaSelec = reservavueloEJB.listarReservas(vueloSelec.getSalto_id());
+
+        total=reservavueloEJB.sumaTotal(vueloSelec.getSalto_id());
+        System.out.println("totaaaaall " + reservavueloEJB.sumaTotal(vueloSelec.getSalto_id()));
 
     }
 
@@ -235,12 +257,12 @@ public class VuelosaltoController implements Serializable {
                 redireccion = "/Vistas/RegistrarVuelosReservas/CreatePasajero?faces-redirect=true";
             } else {
                 System.out.println("disponibilidad excedida");
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"Disponibilidad excedida",""));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Disponibilidad excedida", ""));
             }
 
         } catch (Exception e) {
             System.out.println("disponibilidad excedida");
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"Disponibilidad excedida",""));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Disponibilidad excedida", ""));
         }
         return redireccion;
     }
@@ -286,9 +308,20 @@ public class VuelosaltoController implements Serializable {
                 reservaRegistro.setEquipo(0.00);
             }
 
+            totalCliente = reservaRegistro.getValor() + reservaRegistro.getCamarografo() + reservaRegistro.getEquipo();
+
+            reservaRegistro.setTotalcliente(totalCliente);
+
+            reservaRegistro.setTotal(totalCliente + total);
+
+            System.out.println("OBJETO TOTAL"+reservaRegistro.getTotal());
+            
+            
             vueloSelec.setDisponible(disponiblePas);
+            
             vuelosaltoEJB.edit(vueloSelec);
             reservavueloEJB.create(reservaRegistro);
+            reservavueloEJB.updateTotal(vueloSelec.getSalto_id(), totalCliente + total);
 
         } catch (Exception e) {
         }

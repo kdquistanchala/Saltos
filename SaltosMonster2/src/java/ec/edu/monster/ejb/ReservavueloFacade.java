@@ -52,4 +52,50 @@ public class ReservavueloFacade extends AbstractFacade<Reservavuelo> implements 
 
     }
 
+    @Override
+    public Double sumaTotal(int numVuelo) {
+
+        Reservavuelo reservaVuelo = null;
+        String consulta;
+        Double total = 0.0;
+        try {
+
+            //consulta="SELECT c FROM Cliente c"+idPersona;
+            consulta = "SELECT r FROM Reservavuelo r WHERE r.numVuelo = ?1";
+            //"       select c from Course c inner join c.users us where us.username=:usr"
+            //consulta="SELECT * FROM Usuario u WHERE u.USUARIO_NOMBRE = ?1 and u.USUARIO_PASSWORD = ?2";
+            Query query = em.createQuery(consulta);
+            //Query query= em.createNativeQuery(consulta);
+            query.setParameter(1, numVuelo);
+
+            List<Reservavuelo> lista = query.getResultList();
+
+            if (!lista.isEmpty()) {
+                reservaVuelo = lista.get(0);
+                total = reservaVuelo.getTotal();
+            }
+
+        } catch (Exception e) {
+            throw e;
+        }
+        return total;
+
+    }
+
+    public void updateTotal(int numVuelo, Double total) {
+        String consulta;
+        try {
+            consulta = "UPDATE Reservavuelo r set r.total = ?1 WHERE r.numVuelo = ?2";
+            //consulta="SELECT * FROM Usuario u WHERE u.USUARIO_NOMBRE = ?1 and u.USUARIO_PASSWORD = ?2";
+            Query query = em.createQuery(consulta);
+            //Query query= em.createNativeQuery(consulta);
+            query.setParameter(1, total);
+            query.setParameter(2, numVuelo);
+            query.executeUpdate();
+
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
 }

@@ -17,49 +17,85 @@
                 <h:form>
                     <p:messages id="mensaje" autoUpdate="true"/>
 
-                <p:dataTable value="#{vuelosaltoController.reservaSelec}"  var="reserva">
+                    <p:dataTable value="#{vuelosaltoController.reservaSelec}"  var="reserva" id="reservaT">
 
-                    <p:column headerText="Número de vuelo">
-                        <h:outputText value="#{reserva.numVuelo}" />
-                    </p:column>
+                        <p:column headerText="Número de vuelo">
+                            <h:outputText value="#{reserva.numVuelo}" />
+                        </p:column>
 
-                    <p:column headerText="Fecha">
-                        <h:outputText value="#{reserva.horarioVuelo}" >
-                            <f:convertDateTime pattern="dd/MM/yyyy"/>
-                        </h:outputText>
-                    </p:column>
+                        <p:column headerText="Fecha">
+                            <h:outputText value="#{reserva.horarioVuelo}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </h:outputText>
+                        </p:column>
 
-                    <p:column headerText="Pasajero">
-                        <h:outputText value="#{reserva.pasajero}">
-                        </h:outputText>
+                        <p:column headerText="Pasajero">
+                            <h:outputText value="#{reserva.pasajero}">
+                            </h:outputText>
 
-                    </p:column>       
+                        </p:column>       
 
-                    <p:column headerText="Tipo">
-                        <h:outputText value="#{reserva.tipo}">
-                        </h:outputText>
-                    </p:column>    
+                        <p:column headerText="Tipo">
+                            <h:outputText value="#{reserva.tipo}">
+                            </h:outputText>
+                        </p:column>    
 
-                    <p:column headerText="Valor">
-                        <h:outputText value="#{reserva.valor}">
-                        </h:outputText>
-                    </p:column>    
+                        <p:column headerText="Valor">
+                            <h:outputText value="#{reserva.valor}">
+                            </h:outputText>
+                        </p:column>    
 
-                    <p:column headerText="Equipo">
-                        <h:outputText value="#{reserva.equipo}">
-                        </h:outputText>
-                    </p:column>    
+                        <p:column headerText="Equipo">
+                            <h:outputText value="#{reserva.equipo}">
+                            </h:outputText>
+                        </p:column>    
 
-                    <p:column headerText="Camarografo">
-                        <h:outputText value="#{reserva.camarografo}">
-                        </h:outputText>
-                    </p:column>    
+                        <p:column headerText="Camarografo">
+                            <h:outputText value="#{reserva.camarografo}">
+                            </h:outputText>
+                        </p:column>    
 
-                </p:dataTable>
+                        <p:column headerText="Valor por Cliente">
+                            <h:outputText value="#{reserva.totalcliente}">
+                            </h:outputText>
+                        </p:column>   
 
-                <p:commandButton value="Agregar Pasajero" action="#{vuelosaltoController.verificarDisponibilidad()}"/>
+                    </p:dataTable>
 
+                    <br/>
+                    <br/>
+                    <h:panelGrid columns="2">
+                        <p:outputLabel value="Valor Total:" for="valTotal"/>
+                        <p:outputLabel value="#{vuelosaltoController.total}" id="valTotal"/>
+
+                    </h:panelGrid>
+
+                    <br/>
+                    <br/>
+                    <p:commandButton value="Agregar Pasajero" action="#{vuelosaltoController.verificarDisponibilidad()}"/>
+
+                    <br/>
+                    <br/>
+
+                    <h:commandLink>
+                        <h:graphicImage url="/Vistas/iconos/pdf.png" width="48"/>
+                        <p:dataExporter type="pdf" target="reservaT" fileName="ReservaPDF"/>
+                    </h:commandLink>
+
+
+                    <h:commandLink>
+                        <h:graphicImage url="/Vistas/iconos/excel.png" width="48"/>
+                        <p:dataExporter type="xls" target="reservaT" fileName="ReservaExcel"/>
+                    </h:commandLink>          
+
+
+                    <h:commandLink>
+                        <h:graphicImage url="/Vistas/iconos/impr.png" width="48"/>
+                        <p:printer target="reservaT"/>
+                    </h:commandLink>   
                 </h:form>
+
+
 
             </ui:define>
 

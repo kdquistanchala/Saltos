@@ -5,19 +5,22 @@
  */
 package ec.edu.monster.controller;
 
+import ec.edu.monster.ejb.ModulotreeFacadeLocal;
 import ec.edu.monster.ejb.OpcionFacadeLocal;
 import ec.edu.monster.ejb.SubsistemaFacadeLocal;
+import ec.edu.monster.ejb.UsurolFacadeLocal;
+import ec.edu.monster.model.Modulotree;
 import ec.edu.monster.model.Opcion;
 import ec.edu.monster.model.Subsistema;
 import ec.edu.monster.model.Usuario;
-import java.awt.Menu;
+import ec.edu.monster.model.Usurol;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import org.primefaces.model.menu.DefaultMenuItem;
 import org.primefaces.model.menu.DefaultMenuModel;
@@ -79,9 +82,37 @@ public class SubsistemaController implements Serializable {
         this.model = model;
     }
 
+    
+    @EJB
+    private UsurolFacadeLocal usuRolEJB;
+    @EJB
+    private ModulotreeFacadeLocal treeEJB;
+    
     public void establecerPermisos() {
 
         Usuario us = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
+        
+        List<Integer> roles = new ArrayList<>();
+        List<Integer> opcionesPermitidas = new ArrayList<>();
+        List<Integer> subsistemasPermitidos = new ArrayList<>();
+        List<Usurol> usuariosRol = usuRolEJB.findAll();
+        List<Modulotree> tree = treeEJB.findAll();
+        
+        for(Usurol item : usuariosRol){
+            if(us.getUsuario_id()==item.getUsuario_id()){
+                roles.add(item.getRol_id());
+            }
+        }
+        
+        for(Modulotree item : tree){
+            if(roles.contains(item.getRol_id())){
+                opcionesPermitidas.add(item.getOpcion_id());
+                subsistemasPermitidos.add(item.getSubsistema_id());
+            }
+        }
+        
+        
+        
         /*
         for (Opcion m : listaO) {
             DefaultSubMenu firstSubmenu = new DefaultSubMenu(m.getOpcion_descripcion());
@@ -90,14 +121,14 @@ public class SubsistemaController implements Serializable {
         }*/
 
         //System.out.println("ESTE ROL"+us.getRol());
-        for (Subsistema m : listaS) {
-            if (m.getRol_id()==us.getRol()) {
-                DefaultSubMenu firstSubmenu = new DefaultSubMenu(m.getSubsistema_descripcion());
+        for (Subsistema sub : listaS) {
+            if (subsistemasPermitidos.contains(sub.getSubsistema_id())) {
+                DefaultSubMenu firstSubmenu = new DefaultSubMenu(sub.getSubsistema_descripcion());
                 
-                for (Opcion i : listaO) {
-                    if(i.getSubsistema() == m.getSubsistema_id()){
-                        DefaultMenuItem item= new DefaultMenuItem(i.getOpcion_descripcion());
-                        item.setUrl("../"+i.getOpcion_vista());
+                for (Opcion op : listaO) {
+                    if(opcionesPermitidas.contains(op.getOpcion_id())&&op.getSubsistema()==sub.getSubsistema_id()){
+                        DefaultMenuItem item= new DefaultMenuItem(op.getOpcion_descripcion());
+                        item.setUrl("../"+op.getOpcion_vista());
                         firstSubmenu.addElement(item);
                     }
                 }

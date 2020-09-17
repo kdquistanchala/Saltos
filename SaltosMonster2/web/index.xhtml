@@ -20,9 +20,9 @@
 
                     <h:panelGrid>
                         <p:outputLabel style="color: white;" for="txtUsuario" value="Usuario" />
-                        <p:inputText  id="txtUsuario" value="#{indexController.usuario.usuario_nombre}" required="true"/>
+                        <p:inputText  id="txtUsuario" value="#{indexController.usuario.usuario_nombre}" required="true" autocomplete="off"/>
                         <p:outputLabel style="color: white;" for="txtClave" value="Clave" />
-                        <p:password id="txtClave" value="#{indexController.usuario.usuario_password}" required="true"/>
+                        <p:password id="txtClave" value="#{indexController.usuario.usuario_password}" required="true" autocomplete="off"/>
                         <br/>
                         <p:commandButton style="width:224px;" icon="ui-icon-key" value="Iniciar Sesión" action="#{indexController.iniciarSesion()}"/>
                     </h:panelGrid>

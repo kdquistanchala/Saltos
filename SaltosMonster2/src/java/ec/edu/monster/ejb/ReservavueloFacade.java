@@ -98,4 +98,46 @@ public class ReservavueloFacade extends AbstractFacade<Reservavuelo> implements 
         }
     }
 
+    @Override
+    public List<Reservavuelo> listarLibres() {
+
+        List<Reservavuelo> lista = null;
+        String consulta;
+        try {
+            consulta = "SELECT r FROM Reservavuelo r WHERE r.tipo=?1";
+            //consulta="SELECT * FROM Usuario u WHERE u.USUARIO_NOMBRE = ?1 and u.USUARIO_PASSWORD = ?2";
+            Query query = em.createQuery(consulta);
+            query.setParameter(1, "libre cliente");
+            //Query query= em.createNativeQuery(consulta);
+
+            lista = query.getResultList();
+
+        } catch (Exception e) {
+            throw e;
+        }
+        return lista;
+
+    }
+
+    @Override
+    public List<Reservavuelo> listarTandem() {
+
+        List<Reservavuelo> lista = null;
+        String consulta;
+        try {
+            consulta = "SELECT r FROM Reservavuelo r WHERE r.tipo=?1";
+            //consulta="SELECT * FROM Usuario u WHERE u.USUARIO_NOMBRE = ?1 and u.USUARIO_PASSWORD = ?2";
+            Query query = em.createQuery(consulta);
+            query.setParameter(1, "tándem cliente");
+            //Query query= em.createNativeQuery(consulta);
+
+            lista = query.getResultList();
+
+        } catch (Exception e) {
+            throw e;
+        }
+        return lista;
+
+    }
+
 }

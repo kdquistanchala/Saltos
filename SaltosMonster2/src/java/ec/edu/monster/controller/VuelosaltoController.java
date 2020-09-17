@@ -66,6 +66,10 @@ public class VuelosaltoController implements Serializable {
     private Double totalCliente = 0.0;
     private Double total = 0.0;
 
+    private List<Reservavuelo> vuelosLibres;
+
+    private List<Reservavuelo> vuelosTandem;
+
     @PostConstruct
     public void init() {
         vuelosalto = new Vuelosalto();
@@ -77,6 +81,10 @@ public class VuelosaltoController implements Serializable {
         reservaRegistro = new Reservavuelo();
 
         personas = personaEJB.findAll();
+
+        vuelosLibres = reservavueloEJB.listarLibres();
+        vuelosTandem = reservavueloEJB.listarTandem();
+
     }
 
     public List<Vuelosalto> getVuelos() {
@@ -214,8 +222,22 @@ public class VuelosaltoController implements Serializable {
     public void setTotal(Double total) {
         this.total = total;
     }
-    
-    
+
+    public List<Reservavuelo> getVuelosLibres() {
+        return vuelosLibres;
+    }
+
+    public void setVuelosLibres(List<Reservavuelo> vuelosLibres) {
+        this.vuelosLibres = vuelosLibres;
+    }
+
+    public List<Reservavuelo> getVuelosTandem() {
+        return vuelosTandem;
+    }
+
+    public void setVuelosTandem(List<Reservavuelo> vuelosTandem) {
+        this.vuelosTandem = vuelosTandem;
+    }
 
     public void registrar() {
         try {
@@ -243,7 +265,7 @@ public class VuelosaltoController implements Serializable {
 
         reservaSelec = reservavueloEJB.listarReservas(vueloSelec.getSalto_id());
 
-        total=reservavueloEJB.sumaTotal(vueloSelec.getSalto_id());
+        total = reservavueloEJB.sumaTotal(vueloSelec.getSalto_id());
         System.out.println("totaaaaall " + reservavueloEJB.sumaTotal(vueloSelec.getSalto_id()));
 
     }
@@ -270,6 +292,7 @@ public class VuelosaltoController implements Serializable {
     public void registrarPasajero() {
         try {
 
+            System.out.println("ENTREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
             reservaRegistro.setNumVuelo(vueloSelec.getSalto_id());
             reservaRegistro.setHorarioVuelo(vueloSelec.getHorario_fecha());
             reservaRegistro.setPasajero(nombreCliente);
@@ -294,6 +317,7 @@ public class VuelosaltoController implements Serializable {
                 disponiblePas = disponiblePas + 1;
                 reservaRegistro.setEquipo(30.0);
             }
+            System.out.println("OBJETOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
 
             if (camara.equals("Si")) {
                 reservaRegistro.setCamarografo(70.0);
@@ -313,12 +337,11 @@ public class VuelosaltoController implements Serializable {
             reservaRegistro.setTotalcliente(totalCliente);
 
             reservaRegistro.setTotal(totalCliente + total);
+            
+            System.out.println("OBJETO TOTAL" + reservaRegistro.getTotal());
 
-            System.out.println("OBJETO TOTAL"+reservaRegistro.getTotal());
-            
-            
             vueloSelec.setDisponible(disponiblePas);
-            
+
             vuelosaltoEJB.edit(vueloSelec);
             reservavueloEJB.create(reservaRegistro);
             reservavueloEJB.updateTotal(vueloSelec.getSalto_id(), totalCliente + total);

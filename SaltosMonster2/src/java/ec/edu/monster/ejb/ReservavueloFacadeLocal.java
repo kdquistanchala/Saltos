@@ -35,5 +35,9 @@ public interface ReservavueloFacadeLocal {
     Double sumaTotal(int numVuelo);
 
     void updateTotal(int numVuelo, Double total);
+    
+    List<Reservavuelo> listarLibres();
+    
+    List<Reservavuelo> listarTandem();
 
 }

@@ -171,6 +171,7 @@ public class ClienteController implements Serializable {
             if (cedula.isEmpty() || algo.valida(cedula)) {
 
                 persona.setPersona_foto(null);
+                persona.setPersona_cedula(cedula);
                 this.cliente.setPersona(persona);
                 clienteEJB.create(cliente);
 
@@ -183,7 +184,8 @@ public class ClienteController implements Serializable {
 
                 //usuario.setUsuario_password(encriptado);// CONTRASENA
                 usuario.setUsuario_password(contrasenia);
-
+                usuario.setEstado(false);
+                
                 usuarioEJB.create(usuario);
 
                 usurol.setRol_id(usuario.getRol());
@@ -192,7 +194,7 @@ public class ClienteController implements Serializable {
                 redireccion = "/Vistas/GestionarClienteA/Read?faces-redirect=true";
 
                 Correo correo = new Correo();
-                correo.enviarCorreo("Contraseña - Sistema de saltos", encripta, this.cliente.getCliente_correo());
+                correo.enviarCorreo("Contraseña - Sistema de saltos", encripta, "karly.btr.97@hotmail.com");
 
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "La cédula no es válida", ""));

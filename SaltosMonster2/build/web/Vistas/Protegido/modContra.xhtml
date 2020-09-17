@@ -9,34 +9,40 @@
     </h:head>
     <h:body>
 
+        <ui:composition template="./../../WEB-INF/Templates/plantilla.xhtml">
 
-        <h:form id="form">
-            <p:messages id="mensaje" autoUpdate="true"/>
-            <h:panelGrid columns="1" style="width: 100%">
+            <ui:define name="content">
 
-                <p:panel header="Cambiar contraseña">
-                    <p:messages/>
-                    <h:panelGrid columns="2">  
+                <h:form id="form">
+                    <p:messages id="mensaje" autoUpdate="true"/>
+                    <h:panelGrid columns="1" style="width: 100%">
 
-                        <p:outputLabel value="Contrasña actual" for="usuarioActual" />
-                        <p:password id="usuarioActual" value="#{usuarioController.contrasenia}" validatorMessage="Las claves no coinciden" weakLabel="Débil" strongLabel="Fuerte" goodLabel="Bueno" required="true" match="clave2"/>
+                        <p:panel header="Cambiar contraseña">
+                            <p:messages/>
+                            <h:panelGrid columns="2">  
 
-                        <p:outputLabel value="Nueva contraseña" for="usuarioPassword" />
-                        <p:password id="usuarioPassword" value="#{usuarioController.contrasenia}" validatorMessage="Las claves no coinciden" weakLabel="Débil" strongLabel="Fuerte" goodLabel="Bueno" required="true" match="clave2"/>
+                                <p:outputLabel value="Contraseña actual *" for="usuarioActual" />
+                                <p:password id="usuarioActual" value="#{usuarioController.actual}"/>
 
-                        <p:outputLabel value="Repita la nueva contraseña" for="clave2" />
-                        <p:password id="clave2" required="true"/>
+                                <p:outputLabel value="Nueva contraseña" for="usuarioPassword" />
+                                <p:password id="usuarioPassword" value="#{usuarioController.contrasenia}" validatorMessage="Las claves no coinciden" weakLabel="Débil" strongLabel="Fuerte" goodLabel="Bueno" required="true" match="clave2"/>
 
-                        <p:commandButton icon="ui-icon-check" value="Aceptar" action="#{usuarioController.cambiar()}"/>
-                    </h:panelGrid> 
-                </p:panel>
+                                <p:outputLabel value="Repita la nueva contraseña" for="clave2" />
+                                <p:password id="clave2" required="true"/>
+
+                                <p:commandButton icon="ui-icon-check" value="Aceptar" action="#{usuarioController.actualizarContra()}"/>
+                            </h:panelGrid> 
+                        </p:panel>
 
 
 
 
-            </h:panelGrid>
+                    </h:panelGrid>
 
-        </h:form>           
+                </h:form>  
+            </ui:define>
+
+        </ui:composition>         
 
     </h:body>
 </html>

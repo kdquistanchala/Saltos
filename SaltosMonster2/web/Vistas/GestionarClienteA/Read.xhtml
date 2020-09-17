@@ -15,11 +15,9 @@
             <ui:define name="content">
                 <h3> Usuarios registrados en el sistema </h3>
 
-                <p:commandButton value="Agregar Nuevo Usuario" action="/Vistas/GestionarClienteA/CreateA?faces-redirect=true"/>
-                
                 <p:dataTable value="#{gestionarClienteAController.usuarios}"  var="usuario">
 
-                    <p:column headerText="Item">
+                    <p:column headerText="Ítem">
                         <h:outputText value="#{usuario.usuario_id}" />
                     </p:column>
                     <p:column headerText="Nombres de usuario">

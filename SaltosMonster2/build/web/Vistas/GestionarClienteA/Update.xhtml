@@ -21,14 +21,14 @@
                         <p:inputText id="personaNombres" value="#{gestionarClienteAController.selected.persona_nombres}" title="Nombres" />
                         <p:outputLabel value="Apellidos" for="personaApellidos" />
                         <p:inputText id="personaApellidos" value="#{gestionarClienteAController.selected.persona_apellidos}" title="Apellidos" />
-                        <p:outputLabel value="Cedula" for="personaCedula" />
+                        <p:outputLabel value="Cédula" for="personaCedula" />
                         <p:inputText id="personaCedula" value="#{gestionarClienteAController.selected.persona_cedula}" title="Cedula" />
 
                         <p:outputLabel value="Edad" for="clienteEdad" />
                         <p:inputText id="clienteEdad" value="#{gestionarClienteAController.selectedC.cliente_edad}" title="Edad" />
                         <p:outputLabel value="Correo" for="clienteCorreo" />
                         <p:inputText id="clienteCorreo" value="#{gestionarClienteAController.selectedC.cliente_correo}" title="Correo" />
-                        <p:outputLabel value="Telefono" for="clienteTelefono" />
+                        <p:outputLabel value="Teléfono" for="clienteTelefono" />
                         <p:inputText id="clienteTelefono" value="#{gestionarClienteAController.selectedC.cliente_telefono}" title="Telefono" />                  
                         <p:commandButton icon="ui-icon-check" value="Registrar" actionListener="#{gestionarClienteAController.update()}" action="/Vistas/GestionarClienteA/Read?faces-redirect=true"/>
                     </h:panelGrid> 

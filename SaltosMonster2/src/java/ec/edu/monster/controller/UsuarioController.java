@@ -17,6 +17,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
@@ -110,8 +111,6 @@ public class UsuarioController implements Serializable {
     public void setActual(String actual) {
         this.actual = actual;
     }
-    
-    
 
     public String cambiar() {
 
@@ -135,16 +134,28 @@ public class UsuarioController implements Serializable {
     public String actualizarContra() {
 
         String redireccion = null;
+        us = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
+        us.setUsuario_password(actual);
+        
+        Usuario usu;
+        
         try {
 
-            us = (Usuario) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("usuario");
-            String encriptado = DigestUtils.md5Hex(contrasenia);
-            us.setUsuario_password(encriptado);
-            System.out.println(contrasenia);
-            System.out.println("usuario" + us.getUsuario_nombre());
+            usu=usuarioEJB.iniciarSesion(us);
+            if (usu != null) {
+                System.out.println(us.getUsuario_nombre());
+                System.out.println(us.getUsuario_password());
+                //Almacenar en la sesi[on de JSF
+                String encriptado = DigestUtils.md5Hex(contrasenia);
+                us.setUsuario_password(encriptado);
 
-            usuarioEJB.actualizarContra(us);
-            redireccion = "/Vistas/Protegido/Principal?faces-redirect=true";
+                usuarioEJB.actualizarContra(us);
+                //redireccion = "/Vistas/Protegido/Principal?faces-redirect=true";
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Aviso: Operación exitosa", "Operación exitosa"));
+
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Aviso: La contraseña es incorrecta", "La contraseña es incorrecta"));
+            }
 
         } catch (Exception e) {
         }

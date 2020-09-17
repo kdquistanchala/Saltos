@@ -19,18 +19,16 @@ import javax.inject.Named;
  *
  * @author danie
  */
-
 @Named
 @ViewScoped
-public class IndexController implements Serializable{
-    
+public class IndexController implements Serializable {
+
     private Usuario usuario;
     @EJB
     private UsuarioFacadeLocal EJBUsuario;
-    
-    
+
     @PostConstruct
-    public void init(){
+    public void init() {
         usuario = new Usuario();
     }
 
@@ -41,24 +39,32 @@ public class IndexController implements Serializable{
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
- 
-    public String iniciarSesion(){
+
+    public String iniciarSesion() {
         Usuario us;
-        String redireccion= null;
-        try{
+        String redireccion = null;
+        try {
             us = EJBUsuario.iniciarSesion(usuario);
-            
-            if(us!=null){
+
+            System.out.println("PRIMER REGISTRO" + us.getEstado());
+            if (us != null) {
                 //Almacenar en la sesi[on de JSF
-                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("usuario", us);
-                redireccion="/Vistas/Protegido/Principal?faces-redirect=true";
-            }else{
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"Aviso","Credenciales incorrectas"));
+
+                if (!us.getEstado()) {
+                    //VISTA NUEVA CONTRASEÑA
+                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("usuario", us);
+                    redireccion = "/Vistas/Protegido/cambiarContra?faces-redirect=true";
+                } else {
+                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("usuario", us);
+                    redireccion = "/Vistas/Protegido/Principal?faces-redirect=true";
+                }
+
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Aviso", "Credenciales incorrectas"));
             }
-            
-            
-        }catch(Exception e){
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL,"Aviso","Error:"));
+
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Aviso", "Error:"));
         }
         return redireccion;
     }

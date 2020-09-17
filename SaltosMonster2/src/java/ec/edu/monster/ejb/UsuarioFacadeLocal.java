@@ -41,4 +41,6 @@ public interface UsuarioFacadeLocal {
     void actualizarTodos(Integer idrol) throws Exception;
     
     void eliminarUno(Integer idrol, Integer idusuario);
+    
+    void actualizarContra(Usuario us) throws Exception;
 }

@@ -21,30 +21,33 @@ import javax.persistence.Table;
  * @author danie
  */
 @Entity
-@Table (name="usuario")
-public class Usuario implements Serializable{
+@Table(name = "usuario")
+public class Usuario implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int usuario_id;
-    
+
     /*
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "PERSONA_ID", nullable = false)*/
     @Column(name = "PERSONA_ID")
     private Integer persona;
-    
+
     /*
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "ROL_ID", nullable = false)*/
     @Column(name = "ROL_ID")
     private Integer rol;
-    
+
     @Column(name = "USUARIO_NOMBRE")
     private String usuario_nombre;
-    
+
     @Column(name = "USUARIO_PASSWORD")
-    private String usuario_password;    
+    private String usuario_password;
+
+    @Column(name = "estado")
+    private Boolean estado;
 
     public int getUsuario_id() {
         return usuario_id;
@@ -62,8 +65,6 @@ public class Usuario implements Serializable{
         this.persona = persona;
     }
 
-
-
     public Integer getRol() {
         return rol;
     }
@@ -71,8 +72,6 @@ public class Usuario implements Serializable{
     public void setRol(Integer rol) {
         this.rol = rol;
     }
-
-
 
     public String getUsuario_nombre() {
         return usuario_nombre;
@@ -90,6 +89,16 @@ public class Usuario implements Serializable{
         this.usuario_password = usuario_password;
     }
 
+    public Boolean getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Boolean estado) {
+        this.estado = estado;
+    }
+
+    
+    
     @Override
     public int hashCode() {
         int hash = 3;
@@ -118,8 +127,7 @@ public class Usuario implements Serializable{
     @Override
     public String toString() {
         return String.format("%s", usuario_nombre);
-        
+
     }
-    
-    
+
 }

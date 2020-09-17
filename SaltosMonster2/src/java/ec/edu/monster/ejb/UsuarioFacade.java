@@ -162,4 +162,22 @@ public class UsuarioFacade extends AbstractFacade<Usuario> implements UsuarioFac
             throw e;
         }
     }
+
+    @Override
+    public void actualizarContra(Usuario us) throws Exception {
+        String consulta;
+        
+        try {
+            consulta = "UPDATE Usuario u set u.usuario_password=?1, u.estado=1 WHERE u.usuario_nombre = ?2";
+            //consulta="SELECT * FROM Usuario u WHERE u.USUARIO_NOMBRE = ?1 and u.USUARIO_PASSWORD = ?2";
+            Query query = em.createQuery(consulta);
+            //Query query= em.createNativeQuery(consulta);
+            query.setParameter(1, us.getUsuario_password());
+            query.setParameter(2, us.getUsuario_nombre());
+            query.executeUpdate();
+
+        } catch (Exception e) {
+            throw e;
+        }
+    }
 }

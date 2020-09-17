@@ -14,8 +14,26 @@
 
             <ui:define name="content">
                 <h3> Horarios de los vuelos registrados </h3>
+
+
+
                 <h:form>
+
                     <p:messages id="mensaje" autoUpdate="true"/>
+
+                    <p:panel header="Cabecera">
+                        <h:panelGrid columns="4">
+                            <h:outputLabel value="Cliente" for="client1eNombre" />
+                            <h:inputText id="clienteNombre" title="Cliente" />
+
+                            <p:outputLabel value="Fecha de emisión" for="femision" />
+                            <p:calendar id="femision"
+                                        showOn="button"
+                                        navigator="true"/>
+                        </h:panelGrid>
+                    </p:panel>
+
+
 
                     <p:dataTable value="#{vuelosaltoController.reservaSelec}"  var="reserva" id="reservaT">
 
@@ -64,18 +82,36 @@
 
                     <br/>
                     <br/>
-                    <h:panelGrid columns="2">
-                        <p:outputLabel value="Valor Total:" for="valTotal"/>
-                        <p:outputLabel value="#{vuelosaltoController.total}" id="valTotal"/>
-
-                    </h:panelGrid>
-
-                    <br/>
-                    <br/>
                     <p:commandButton value="Agregar Pasajero" action="#{vuelosaltoController.verificarDisponibilidad()}"/>
 
                     <br/>
                     <br/>
+
+                    <br/>
+
+                    <form id="valores">
+                        <center>
+                        <h:panelGrid columns="2">
+                            <h:outputLabel value="Total Parcial:" for="parcial" style="font-weight: bold" />
+                            <h:outputLabel id="parcial"/>
+                            <p:outputLabel value="IVA: " for="iva" style="font-weight: bold"/>
+                            <p:outputLabel id="iva" value="12%"/>
+                            <h:outputLabel value="Total: " for="total" style="font-weight: bold"/>
+                            <h:outputLabel id="total" value="#{vuelosaltoController.total+vuelosaltoController.total*0.12}"/>
+                             <h:outputLabel value="Forma de Pago:  " for="tipo" style="font-weight: bold"/>
+                            <h:selectOneMenu id="tipo">
+                                    <f:selectItem itemLabel="Efectivo" itemValue="" />
+                                    <f:selectItem itemLabel="Tarjeta" itemValue="" />
+                                </h:selectOneMenu>
+                        </h:panelGrid>
+                        
+                        <p:commandButton value="Confirmar"/>
+                        </center>
+                    </form>
+
+                    <br/>
+                    <br/>
+
 
                     <h:commandLink>
                         <h:graphicImage url="/Vistas/iconos/pdf.png" width="48"/>
